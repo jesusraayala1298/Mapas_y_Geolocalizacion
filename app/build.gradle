@@ -1,0 +1,59 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
+
+    defaultConfig {
+        applicationId "net.jesusramirez.mapas_y_geolocalizacion"
+        minSdkVersion 17
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+
+        Properties properties = new Properties()
+        if (rootProject.file("local.properties").exists()) {
+            properties.load(rootProject.file("local.properties").newDataInputStream())
+        }
+
+        // Inject the Maps API key into the manifest
+        manifestPlaceholders = [ mapsApiKey : properties.getProperty("MAPS_API_KEY", "AIzaSyCYIUyIaj5x3AIO2wVsqn77RFKhZtQn_dc") ]
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    //DEPENDENCIA DE MAPAS
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    //POLY UTILS (LO USO PARA DECODIFICAR LOS PUNTOS DE LA POLILINEA QUE ARROJA LA REQUEST)
+    implementation 'com.google.maps.android:android-maps-utils:0.5+'
+    //PARA HACER PETICIONES HTTP
+    implementation 'com.android.volley:volley:1.1.1'
+    //PARA OBTENER LA LOCALIZACION ACTUAL
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
+
+
+}
